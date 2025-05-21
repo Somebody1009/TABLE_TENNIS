@@ -2,6 +2,7 @@ from turtle import Screen
 from paddle import Paddle
 from ball import Ball
 from scoreboard import Scoreboard
+from interface import update_speed_display, update_timer_display, register_bounce
 import time
 
 screen = Screen()
@@ -26,14 +27,19 @@ while game_is_on:
     screen.update()
     time.sleep(ball.move_speed)
     ball.move()
+    update_timer_display()
+    update_speed_display(ball.move_speed)
 
     if ball.ycor() > 280 or ball.ycor() < -280:
         ball.bounce_y()
+        register_bounce()
 
     if ball.distance(r_paddle) < 50 and ball.xcor() > 320:
         ball.bounce_x()
+        register_bounce()
     if ball.distance(l_paddle) < 50 and ball.xcor() < -320:
         ball.bounce_x()
+        register_bounce()
 
     if ball.xcor() > 380:
         scoreboard.l_point()
