@@ -2,8 +2,9 @@ from turtle import Screen
 from paddle import Paddle
 from ball import Ball
 from scoreboard import Scoreboard
-from interface import update_speed_display, update_timer_display, register_bounce
+from interface import setup_menu, is_running, is_paused, register_bounce, update_timer_display, update_speed_display
 import time
+import random
 
 screen = Screen()
 screen.bgcolor("black")
@@ -22,9 +23,15 @@ screen.onkey(r_paddle.go_down, "Down")
 screen.onkey(l_paddle.go_up, "w")
 screen.onkey(l_paddle.go_down, "s")
 
+setup_menu(screen, ball, scoreboard)
+
 game_is_on = True
 while game_is_on:
     screen.update()
+
+    if not is_running() or is_paused():
+        continue
+
     time.sleep(ball.move_speed)
     ball.move()
     update_timer_display()
