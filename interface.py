@@ -83,7 +83,7 @@ def setup_menu(screen, ball, scoreboard):
     screen.onkey(lambda: start_game(ball, scoreboard), "c")
     screen.onkey(lambda: restart_game(ball, scoreboard), "r")
     draw_status("Натисни [Space], щоб почати | Зупинити: [p] | Почати спочатку: [r]")
-    update_speed_display(ball.move_speed)
+    update_speed_display(ball.move_speed if not isinstance(ball, list) else ball[0].move_speed)
     update_bounce_display()
     update_timer_display()
 
@@ -117,14 +117,17 @@ def restart_game(ball, scoreboard):
     game_paused = False
     bounce_count = 0
     start_time = time.time()
-    ball.goto(0, 0)
-    ball.x_move = random.choice([-1, 1]) * (2 + random.random() * 2)
-    ball.y_move = random.choice([-1, 1]) * (2 + random.random() * 2)
-    ball.move_speed = 0.05
-    update_speed_display(ball.move_speed)
-    scoreboard.l_score = 0
-    scoreboard.r_score = 0
-    scoreboard.update_scoreboard()
-    draw_status("Натисни [Space], щоб почати | Зупинити: [p] | Почати спочатку: [r]")
-    update_bounce_display()
-    update_timer_display()
+
+    if isinstance(ball, list):
+        for b in ball:
+            b.goto(0, 0)
+            b.x_move = random.choice([-1, 1]) * (2 + random.random() * 2)
+            b.y_move = random.choice([-1, 1]) * (2 + random.random() * 2)
+            b.move_speed = 0.05
+        update_speed_display(ball[0].move_speed)
+    else:
+        ball.goto(0, 0)
+        ball.x_move = random.choice([-1, 1]) * (2 + random.random() * 2)
+        ball.y_move = random.choice([-1, 1]) * (2 + random.random() * 2)
+        ball.move_speed = 0.05
+        update_speed_display(ball.move_speed)
