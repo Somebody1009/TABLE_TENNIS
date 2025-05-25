@@ -74,6 +74,7 @@ def register_bounce():
     bounce_count += 1
     update_bounce_display()
 
+# Стан гри
 game_running = False
 game_paused = False
 
@@ -138,3 +139,15 @@ def restart_game(ball, scoreboard):
         draw_status("Натисни [Space], щоб почати | Зупинити: [p] | Почати спочатку: [r]")
         update_bounce_display()
         update_timer_display()
+
+    def declare_winner(winner):
+        global game_running, game_paused
+        game_running = False
+        game_paused = True
+        status_writer.clear()
+        status_writer.goto(0, 0)
+        status_writer.write(f"{winner} WINS!", align="center", font=("Courier", 24, "bold"))
+
+    def quit_game():
+        import sys
+        sys.exit()
