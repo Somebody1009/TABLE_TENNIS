@@ -131,3 +131,10 @@ def restart_game(ball, scoreboard):
         ball.y_move = random.choice([-1, 1]) * (2 + random.random() * 2)
         ball.move_speed = 0.05
         update_speed_display(ball.move_speed)
+
+        scoreboard.l_score = 0
+        scoreboard.r_score = 0
+        scoreboard.update_scoreboard()
+        draw_status("Натисни [Space], щоб почати | Зупинити: [p] | Почати спочатку: [r]")
+        update_bounce_display()
+        update_timer_display()
