@@ -2,11 +2,13 @@ from turtle import Turtle
 import time
 import random
 
+# Writer-и
 status_writer = Turtle()
 status_writer.hideturtle()
 status_writer.color("white")
 status_writer.penup()
 
+# SPEED
 speed_writer = Turtle()
 speed_writer.hideturtle()
 speed_writer.color("white")
@@ -20,6 +22,7 @@ speed_label.penup()
 speed_label.goto(-380, 230)
 speed_label.write("SPEED", align="left", font=("Courier", 16, "bold"))
 
+# BOUNCES
 bounce_writer = Turtle()
 bounce_writer.hideturtle()
 bounce_writer.color("white")
@@ -33,6 +36,7 @@ bounce_label.penup()
 bounce_label.goto(-130, 230)
 bounce_label.write("BOUNCES", align="left", font=("Courier", 16, "bold"))
 
+# TIME
 timer_writer = Turtle()
 timer_writer.hideturtle()
 timer_writer.color("white")
@@ -46,6 +50,7 @@ timer_label.penup()
 timer_label.goto(200, 230)
 timer_label.write("TIME", align="left", font=("Courier", 16, "bold"))
 
+# Лічильники
 start_time = time.time()
 bounce_count = 0
 
@@ -69,12 +74,19 @@ def update_timer_display():
     timer_writer.clear()
     timer_writer.write(f"{minutes:02d}:{seconds:02d}", align="left", font=("Courier", 14, "normal"))
 
+def declare_winner(winner):
+    global game_running, game_paused
+    game_running = False
+    game_paused = True
+    status_writer.clear()
+    status_writer.goto(0, 0)
+    status_writer.write(f"{winner} WINS!", align="center", font=("Courier", 24, "bold"))
+
 def register_bounce():
     global bounce_count
     bounce_count += 1
     update_bounce_display()
 
-# Стан гри
 game_running = False
 game_paused = False
 
@@ -121,33 +133,25 @@ def restart_game(ball, scoreboard):
 
     if isinstance(ball, list):
         for b in ball:
-            b.goto(0, 0)
+            b.reset_position()
             b.x_move = random.choice([-1, 1]) * (2 + random.random() * 2)
             b.y_move = random.choice([-1, 1]) * (2 + random.random() * 2)
             b.move_speed = 0.05
         update_speed_display(ball[0].move_speed)
     else:
-        ball.goto(0, 0)
+        ball.reset_position()
         ball.x_move = random.choice([-1, 1]) * (2 + random.random() * 2)
         ball.y_move = random.choice([-1, 1]) * (2 + random.random() * 2)
         ball.move_speed = 0.05
         update_speed_display(ball.move_speed)
 
-        scoreboard.l_score = 0
-        scoreboard.r_score = 0
-        scoreboard.update_scoreboard()
-        draw_status("Натисни [Space], щоб почати | Зупинити: [p] | Почати спочатку: [r]")
-        update_bounce_display()
-        update_timer_display()
+    scoreboard.l_score = 0
+    scoreboard.r_score = 0
+    scoreboard.update_scoreboard()
+    draw_status("Натисни [Space], щоб почати | Зупинити: [p] | Почати спочатку: [r]")
+    update_bounce_display()
+    update_timer_display()
 
-    def declare_winner(winner):
-        global game_running, game_paused
-        game_running = False
-        game_paused = True
-        status_writer.clear()
-        status_writer.goto(0, 0)
-        status_writer.write(f"{winner} WINS!", align="center", font=("Courier", 24, "bold"))
-
-    def quit_game():
-        import sys
-        sys.exit()
+def quit_game():
+    import sys
+    sys.exit()
